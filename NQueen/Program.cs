@@ -7,7 +7,7 @@ namespace NQueen
         static void Main(string[] args)
         {            
             NQueen queen = new NQueen();
-            queen.Search(4);
+            queen.excute(4);
         }
     }
 }
