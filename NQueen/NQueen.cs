@@ -1,33 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace NQueen
 {
-   
+
     /****************************************************************************************    
      * NQueen algorithm 
      * @file NQueen.cs
-     * @copyright 
-     * Copyright 2023
+     * @copbRowright 
+     * CopbRowright 2023
     /****************************************************************************************/
     class NQueen
     {
-        enum STATE
-        {
-            ST_SEARCH_ROW = 0,
-            ST_CHECK_NEXT_NODE,
-            ST_ADD_RESULT
-        };
+        List<bool> VaildRowIndex;           // |, if vaild set 1
+        List<bool> VaildRightObliqueIndex;  // /
+        List<bool> VaildLeftObliqueIndex;   // \
+        List<string> Results;               //result of single tree
+        List<List<string>> AllResults;
 
-        STATE state;
-        byte bProcessingRow;
-        byte bProcessingNrOfQueen;
-        byte bTargetNrOfQueen;
-        node ProcessingNode;
-        bool blProcessCompleted;
-        List<string> AllResults;
-        //bool[] aAccupied;
         /****************************************************************************************
          * @brief       Constractor
          * @param[in]   None. 
@@ -36,70 +28,108 @@ namespace NQueen
         /****************************************************************************************/
         public NQueen()
         {
-            state = STATE.ST_SEARCH_ROW;
-            bProcessingRow = 0;
-            bProcessingNrOfQueen = 0;
-            bTargetNrOfQueen = 0;
-            blProcessCompleted = false;
-            AllResults = new List<string>();
+
+            AllResults = new List<List<string>>();
         }
 
         /****************************************************************************************
-         * @brief search the posible solutionand generate the result.
+         * @brief excutethe agorithm to find the posible solutionand generate the result.
          * @param[in]   bNbOfQueen: Number of Queen.
          * @param[out]  None.
          * @return      None.
          /****************************************************************************************/
-        public void excute(byte bNbOfQueen)
+        public void execute(byte bTargetNrOfQueen)
         {
-            while (!blProcessCompleted)
-            {
-                switch (state)
-                {
-                    case STATE.ST_SEARCH_ROW:
-                        ProcessingNode = new node(0, bProcessingRow);
-                        break;
+            AllResults.Clear();
+            char[] chars = Enumerable.Repeat((char)'.', bTargetNrOfQueen).ToArray();
+            Results = Enumerable.Repeat(new string(chars), bTargetNrOfQueen).ToList();
 
-                    case STATE.ST_CHECK_NEXT_NODE:
-                        if (ProcessingNode.IsNextNodeVaild() == true)
-                            ProcessingNode = ProcessingNode.GetNextNode();
-                            bProcessingNrOfQueen++;
+            VaildRowIndex = Enumerable.Repeat((bool)false, bTargetNrOfQueen).ToList();
+            VaildRightObliqueIndex = Enumerable.Repeat((bool)false, 2 * bTargetNrOfQueen - 1).ToList();
+            VaildLeftObliqueIndex = Enumerable.Repeat((bool)false, 2 * bTargetNrOfQueen - 1).ToList();
 
-                        if (ProcessingNode.IsNextNodeVaild() == false &&
-                            ProcessingNode.IsLastNodeVaild() == true)
-                            ProcessingNode = ProcessingNode.GetLastNode();
+            nqueens(bTargetNrOfQueen, 0);
 
-                        if (bProcessingNrOfQueen == bTargetNrOfQueen)
-                            state = STATE.ST_ADD_RESULT;
-                        break;
-
-                    case STATE.ST_ADD_RESULT:
-                        AllResults.Add(ProcessingNode.GetResult());
-                        break;
-                }
-            }           
-
-            /*aAccupied = new bool[bNbOfQueen*bNbOfQueen];
-            Array.Clear(aAccupied, 0, aAccupied.Length);*/
-            PrintAllResults();
+            //PrintAllResults();
         }
 
         /****************************************************************************************
-         * @brief       print all collected results.
+         * @brief       Print all collected results.
          * @param[in]   None.
          * @param[out]  None.
          * @return      None.
          /****************************************************************************************/
-        private void PrintAllResults() 
+        private void PrintAllResults()
         {
-            for(int i=0; i< AllResults.Count; i++)
+            for (int i = 0; i < AllResults.Count; i++)
             {
-                Console.WriteLine(AllResults[i]);
+                for (int j = 0; j < AllResults[i].Count; j++)
+                {
+                    Console.WriteLine(AllResults[i][j]);
+                }
+                Console.WriteLine();
             }
-            //Console.WriteLine("fadsf");
-            /*QueenSolution queenSolution = new QueenSolution();
-            queenSolution.AddQueen(5);
-            queenSolution.PrintResult();*/
+        }
+        /****************************************************************************************
+        * @brief       If this position is vaild for queen
+        * @param[in]   bColumn: column, bRow row, bTargetNrOfQueen: number of queen.
+        * @param[out]  None.
+        * @return      None.
+        /****************************************************************************************/
+        private bool IsVaild(byte bColumn, byte bRow, byte bTargetNrOfQueen)
+        {
+            return !VaildRowIndex[bColumn]
+                && !VaildRightObliqueIndex[bColumn + bRow]
+                && !VaildLeftObliqueIndex[bColumn - bRow + bTargetNrOfQueen - 1];
+        }
+        /****************************************************************************************
+        * @brief       Update the result
+        * @param[in]   bColumn: column, bRow row, bTargetNrOfQueen: number of queen, blOccupied: set if occupied
+        * @param[out]  None.
+        * @return      None.
+        /****************************************************************************************/
+        private void updateResult(byte bColumn, byte bRow, byte bTargetNrOfQueen, bool blOccupied)
+        {
+            VaildRowIndex[bColumn] = blOccupied;
+            VaildRightObliqueIndex[bColumn + bRow] = blOccupied;
+            VaildLeftObliqueIndex[bColumn - bRow + bTargetNrOfQueen - 1] = blOccupied;
+            if (blOccupied)
+            {
+                Results[bRow] = Results[bRow].Remove(bColumn, 1).Insert(bColumn, "Q");
+            }
+            else
+            {
+                Results[bRow] = Results[bRow].Remove(bColumn, 1).Insert(bColumn, ".");
+            }
+        }
+        /****************************************************************************************
+        * @brief       search all position
+        * @param[in]   bRow row, bTargetNrOfQueen: number of queen.
+        * @param[out]  None.
+        * @return      None.
+        /****************************************************************************************/
+        private void nqueens(byte bTargetNrOfQueen, byte bRow)
+        {
+            if (bRow == bTargetNrOfQueen)
+            {
+                for (int j = 0; j < Results.Count; j++)
+                {
+                    Console.WriteLine(Results[j]);
+                }
+                Console.WriteLine();
+                // found one solution, add to the ans set
+                AllResults.Add(new List<string>(Results));
+                return;
+            }
+
+            // TrbRow everbRow column
+            for (byte bColumn = 0; bColumn < bTargetNrOfQueen; ++bColumn)
+            {
+                if (!IsVaild(bColumn, bRow, bTargetNrOfQueen)) continue;
+                updateResult(bColumn, bRow, bTargetNrOfQueen, true);
+                nqueens(bTargetNrOfQueen, (byte)(bRow + 1));
+                updateResult(bColumn, bRow, bTargetNrOfQueen, false);
+            }
         }
     }
 }

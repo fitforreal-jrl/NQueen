@@ -7,7 +7,7 @@ namespace NQueen
         static void Main(string[] args)
         {            
             NQueen queen = new NQueen();
-            queen.excute(4);
+            queen.execute(4);
         }
     }
 }
