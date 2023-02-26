@@ -36,8 +36,7 @@ In chess, a queen can attack horizontally, vertically, and diagonally. The N-que
 # Test1 - test the sum of posible solution
 As we known the total number of solution of n queen as the table below,
 the module can present the number solution to test.
-
-Order    < ---   Ordinary Queens   --- >             < - Superqueens - >
+Order       ---   Ordinary Queens   ---                - Superqueens - 
 (“N”)   Total Solutions   Unique Solutions         Tot. Sol.     Unique Sol.
 ---------------------------------------------------------------------------
 1                     1                  1                1               1
