@@ -18,8 +18,6 @@
 
 2 directories, 11 files
 
-For a full description of the module, visit the
-[project page](https://www.drupal.org/project/admin_menu).
 
 ## Requirements
 In chess, a queen can attack horizontally, vertically, and diagonally. The N-queens problem asks:
