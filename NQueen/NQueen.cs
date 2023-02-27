@@ -5,9 +5,8 @@ using System.Linq;
 
 namespace NQueen
 {
-
-    /****************************************************************************************    
-     * NQueen algorithm 
+     /****************************************************************************************    
+      * NQueen algorithm 
      * @file NQueen.cs
      * @copbRowright 
      * CopbRowright 2023
@@ -31,7 +30,18 @@ namespace NQueen
 
             AllResults = new List<List<string>>();
         }
-
+        /****************************************************************************************
+        * @brief       Check if the number of found solution is the correct.
+        * @param[in]   bNbOfQueen: Number of Queen.
+        * @param[out]  None.
+        * @return      None.
+        /****************************************************************************************/
+        public void test(byte bTargetNrOfQueen) 
+        {
+            execute(bTargetNrOfQueen);
+            Tester tester = new Tester();
+            tester.CheckSumSolutionCorrect(bTargetNrOfQueen, (byte)AllResults.Count);                
+        }
         /****************************************************************************************
          * @brief excutethe agorithm to find the posible solutionand generate the result.
          * @param[in]   bNbOfQueen: Number of Queen.
