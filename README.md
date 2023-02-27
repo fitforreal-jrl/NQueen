@@ -6,6 +6,7 @@ This project is using C# and created by Microsoft Visual Studio (2019).
 ├── NQueen
 │   ├── NQueen.cs
 │   ├── NQueen.csproj
+│   ├── Tester.cs
 │   └── Program.cs
 ├── bin/Release/netcoreapp3.1
 │   ├── NQueen.deps.json
