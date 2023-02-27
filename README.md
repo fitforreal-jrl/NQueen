@@ -1,11 +1,12 @@
 ## NQueen
-This project is using C# and created by Microsoft Visual Studio (2019).
+This project is using C# and created by Microsoft Visual Studio (2019) to solve n queen problem.
  
 ## Administration Menu
 .
 ├── NQueen
 │   ├── NQueen.cs
 │   ├── NQueen.csproj
+│   ├── Tester.cs
 │   └── Program.cs
 ├── bin/Release/netcoreapp3.1
 │   ├── NQueen.deps.json
@@ -17,7 +18,7 @@ This project is using C# and created by Microsoft Visual Studio (2019).
 ├── NQueen.sln
 └── README.md
 
-2 directories, 11 files
+2 directories, 12 files
 
 
 ## Requirements
