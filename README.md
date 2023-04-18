@@ -95,5 +95,11 @@ Test steps:
 - Input 4 to test
 - Check if the solutions are correct as above.
 
+# Test3 - test the results if it fits the requirement.
+- testify if the calumn and row each result are not repeated from another result.
+
 ## Run
 - Click NQueen.exe in the folder bin/Release/netcoreapp3.1
+
+
+
